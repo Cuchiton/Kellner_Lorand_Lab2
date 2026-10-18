@@ -1,0 +1,28 @@
+﻿@page
+@model Kellner_Lorand_Lab2.Pages.Authors.CreateModel
+
+<h1>Create Author</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Author.FirstName">First Name</label>
+        <input asp-for="Author.FirstName" class="form-control" />
+        <span asp-validation-for="Author.FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Author.LastName">Last Name</label>
+        <input asp-for="Author.LastName" class="form-control" />
+        <span asp-validation-for="Author.LastName" class="text-danger"></span>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+<br />
+<a asp-page="Index">Back to List</a>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,24 @@
+﻿@page "{id:int}"
+@model Kellner_Lorand_Lab2.Pages.Publishers.EditModel
+
+<h1>Edit Publisher</h1>
+
+<form method="post">
+    <input type="hidden" asp-for="Publisher.ID" />
+
+    <div class="form-group">
+        <label asp-for="Publisher.PublisherName"></label>
+        <input asp-for="Publisher.PublisherName" class="form-control" />
+        <span asp-validation-for="Publisher.PublisherName" class="text-danger"></span>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+<br />
+<a asp-page="./Index">Back to List</a>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

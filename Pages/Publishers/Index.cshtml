@@ -1,0 +1,30 @@
+﻿@page
+@model Kellner_Lorand_Lab2.Pages.Publishers.IndexModel
+
+<h1>Publishers</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Publisher Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var publisher in Model.Publishers)
+        {
+            <tr>
+                <td>@publisher.PublisherName</td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@publisher.ID">Edit</a> |
+                    <a asp-page="Details" asp-route-id="@publisher.ID">Details</a> |
+                    <a asp-page="Delete" asp-route-id="@publisher.ID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
