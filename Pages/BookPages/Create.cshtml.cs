@@ -3,19 +3,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace Kellner_Lorand_Lab2.Pages.BookPages;
 
-public class CreateModel : PageModel
+public class CreateModel : BookCategoriesPageModel
 {
-    public Microsoft.AspNetCore.Mvc.Rendering.SelectList? AuthorList { get; set; }
     private readonly Kellner_Lorand_Lab2Context _context;
 
     public CreateModel(Kellner_Lorand_Lab2Context context)
     {
         _context = context;
     }
+
+    [BindProperty]
+    public Book Book { get; set; } = new();
+
+    public SelectList? AuthorList { get; set; }
+
     private async Task LoadAuthorsAsync()
     {
         var authors = await _context.Author
@@ -24,39 +28,56 @@ public class CreateModel : PageModel
             .Select(a => new
             {
                 a.ID,
-                FullName = a.FirstName + " " + a.LastName
+                FullName = a.LastName + " " + a.FirstName
             })
             .ToListAsync();
 
-        AuthorList = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
-            authors, "ID", "FullName");
+        AuthorList = new SelectList(authors, "ID", "FullName");
     }
-
-
 
     public async Task<IActionResult> OnGetAsync()
     {
+        Book = new Book();
+        Book.BookCategories = new List<BookCategory>();
+
+        PopulateAssignedCategoryData(_context, Book);
+
         await LoadAuthorsAsync();
 
         ViewData["PublisherID"] = new SelectList(
-            _context.Set<Publisher>(),
+            _context.Publisher,
             "ID",
             "PublisherName");
 
         return Page();
     }
 
-
-
-    [BindProperty]
-    public Book Book { get; set; } = default!;
-
-    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD.
-    public async Task<IActionResult> OnPostAsync()
+    public async Task<IActionResult> OnPostAsync(string[] selectedCategories)
     {
+        if (selectedCategories != null)
+        {
+            Book.BookCategories = new List<BookCategory>();
+
+            foreach (var category in selectedCategories)
+            {
+                Book.BookCategories.Add(new BookCategory
+                {
+                    CategoryID = int.Parse(category)
+                });
+            }
+        }
 
         if (!ModelState.IsValid)
         {
+            PopulateAssignedCategoryData(_context, Book);
+            await LoadAuthorsAsync();
+
+            ViewData["PublisherID"] = new SelectList(
+                _context.Publisher,
+                "ID",
+                "PublisherName",
+                Book.PublisherID);
+
             return Page();
         }
 
