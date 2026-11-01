@@ -69,10 +69,11 @@ public class EditModel : BookCategoriesPageModel
         }
 
         var bookToUpdate = await _context.Book
-            .Include(b => b.Publisher)
-            .Include(b => b.BookCategories)
-                .ThenInclude(bc => bc.Category)
-            .FirstOrDefaultAsync(b => b.ID == id);
+    .Include(b => b.Author)
+    .Include(b => b.Publisher)
+    .Include(b => b.BookCategories)
+        .ThenInclude(bc => bc.Category)
+    .FirstOrDefaultAsync(b => b.ID == id);
 
         if (bookToUpdate == null)
         {
