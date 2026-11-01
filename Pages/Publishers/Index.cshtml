@@ -1,7 +1,11 @@
-﻿@page
+﻿@page "{id:int?}"
 @model Kellner_Lorand_Lab2.Pages.Publishers.IndexModel
 
-<h1>Publishers</h1>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -10,21 +14,63 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Publisher Name</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Publisher[0].PublisherName)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var publisher in Model.Publishers)
+        @foreach (var item in Model.PublisherData.Publishers)
         {
-            <tr>
-                <td>@publisher.PublisherName</td>
+            string selectedRow = "";
+
+            if (item.ID == Model.PublisherID)
+            {
+                selectedRow = "table-success";
+            }
+
+            <tr class="@selectedRow">
                 <td>
-                    <a asp-page="Edit" asp-route-id="@publisher.ID">Edit</a> |
-                    <a asp-page="Details" asp-route-id="@publisher.ID">Details</a> |
-                    <a asp-page="Delete" asp-route-id="@publisher.ID">Delete</a>
+                    @Html.DisplayFor(modelItem => item.PublisherName)
+                </td>
+                <td>
+                    <a asp-page="./Index" asp-route-id="@item.ID">Select</a> |
+                    <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+ 
+@if (Model.PublisherData.Books != null)
+{
+    <h3>Books Edited by Selected Publisher</h3>
+    <table class="table">
+        @foreach (var item in Model.PublisherData.Publishers)
+        {
+            string selectedRow = "";
+
+            if (item.ID == Model.PublisherID)
+            {
+                selectedRow = "table-success";
+            }
+
+            <tr class="@selectedRow">
+                <td>
+                    @{
+                        foreach (var b in item.Books)
+                        {
+                            @b.Title
+                            @: @b.Author.FullName
+                            <br />
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}

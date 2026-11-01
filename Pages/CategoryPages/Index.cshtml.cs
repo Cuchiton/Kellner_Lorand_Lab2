@@ -14,10 +14,30 @@ public class IndexModel : PageModel
         _context = context;
     }
 
-    public IList<Category> Category { get; set; } = default!;
+    public IList<Category> Category { get; set; } = new List<Category>();
 
-    public async Task OnGetAsync()
+    public IList<Book> Books { get; set; } = new List<Book>();
+
+    public int? CategoryID { get; set; }
+
+    public async Task OnGetAsync(int? id)
     {
-        Category = await _context.Category.ToListAsync();
+        Category = await _context.Category
+            .AsNoTracking()
+            .OrderBy(c => c.CategoryName)
+            .ToListAsync();
+
+        if (id != null)
+        {
+            CategoryID = id.Value;
+
+            Books = await _context.Book
+                .Include(b => b.Author)
+                .Where(b => b.BookCategories
+                    .Any(bc => bc.CategoryID == id.Value))
+                .AsNoTracking()
+                .OrderBy(b => b.Title)
+                .ToListAsync();
+        }
     }
 }
