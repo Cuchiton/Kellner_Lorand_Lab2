@@ -6,5 +6,8 @@ public class Kellner_Lorand_Lab2Context(DbContextOptions<Kellner_Lorand_Lab2Cont
     public DbSet<Kellner_Lorand_Lab2.Models.Publisher> Publisher { get; set; } = default!;
     public DbSet<Kellner_Lorand_Lab2.Models.Author> Author { get; set; } = default!;
     public DbSet<Kellner_Lorand_Lab2.Models.Category> Category { get; set; } = default!;
+    public DbSet<Kellner_Lorand_Lab2.Models.Member> Member { get; set; } = default!;
+
+    public DbSet<Kellner_Lorand_Lab2.Models.Borrowing> Borrowing { get; set; } = default!;
 
 }

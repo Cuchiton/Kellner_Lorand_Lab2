@@ -26,6 +26,8 @@ namespace Kellner_Lorand_Lab2.Models
 
         public Publisher? Publisher { get; set; }
 
+        public ICollection<Borrowing>? Borrowings { get; set; }
+
         public ICollection<BookCategory>? BookCategories { get; set; }
 
     }
