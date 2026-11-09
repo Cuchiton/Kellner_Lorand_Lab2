@@ -1,9 +1,12 @@
+using Kellner_Lorand_Lab2.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Kellner_Lorand_Lab2.Models;
 
 namespace Kellner_Lorand_Lab2.Pages.BookPages;
+
+[Authorize(Roles = "Admin")]
 
 public class DeleteModel : PageModel
 {
